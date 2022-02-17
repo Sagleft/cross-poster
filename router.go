@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,23 +24,6 @@ func (sol *solution) setupRoutes() error {
 			http.StatusNotFound,
 			"404.html",
 			gin.H{},
-		)
-	})
-	sol.Gin.GET("/pairs", func(c *gin.Context) {
-		pairs, err := sol.getExchangePairs()
-		if err != nil {
-			c.String(http.StatusInternalServerError, "failed to get pairs: "+err.Error())
-			return
-		}
-		log.Println(pairs)
-
-		sol.renderTemplate(
-			c,
-			http.StatusOK,
-			"pairs.html",
-			gin.H{
-				"pairs": pairs,
-			},
 		)
 	})
 

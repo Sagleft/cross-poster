@@ -1,6 +1,12 @@
 {
-    "exchange": {
-        "pubkey": "",
-        "password": ""
+    "utopia": {
+        "host": "127.0.0.1",
+        "protocol": "http",
+        "port": 20000,
+        "token": ""
+    },
+    "telegram": {
+        "token": "",
+        "chat_id": 0
     }
 }

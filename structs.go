@@ -1,21 +1,27 @@
 package main
 
 import (
-	"github.com/Sagleft/uexchange-go"
 	"github.com/gin-gonic/gin"
 )
 
 type solution struct {
-	Config         appConfig
-	Gin            *gin.Engine
-	ExchangeClient *uexchange.Client
+	Config appConfig
+	Gin    *gin.Engine
 }
 
 type appConfig struct {
-	Exchange exchangeConfig `json:"exchange"`
+	Utopia   utopiaConfig   `json:"utopia"`
+	Telegram telegramConfig `json:"telegram"`
 }
 
-type exchangeConfig struct {
-	PublicKey string `json:"pubkey"`
-	Password  string `json:"password"`
+type utopiaConfig struct {
+	Host     string `json:"host"`
+	Protocol string `json:"protocol"`
+	Port     int    `json:"port"`
+	Token    string `json:"token"`
+}
+
+type telegramConfig struct {
+	Token  string `json:"token"`
+	ChatID int64  `json:"chat_id"`
 }
