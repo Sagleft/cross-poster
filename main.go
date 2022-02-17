@@ -47,6 +47,10 @@ func (sol *solution) connectMessengers() error {
 }
 
 func (sol *solution) connectUtopia() error {
+	if sol.Config.Utopia.Token == "" {
+		return errors.New("utopia token is not set in " + configJSONPath)
+	}
+
 	sol.Messengers.Utopia = &utopiago.UtopiaClient{
 		Protocol: sol.Config.Utopia.Protocol,
 		Token:    sol.Config.Utopia.Token,
