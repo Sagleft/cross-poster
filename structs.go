@@ -1,12 +1,20 @@
 package main
 
 import (
+	utopiago "github.com/Sagleft/utopialib-go"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/tucnak/telebot.v2"
 )
 
 type solution struct {
-	Config appConfig
-	Gin    *gin.Engine
+	Config     appConfig
+	Gin        *gin.Engine
+	Messengers messengerClients
+}
+
+type messengerClients struct {
+	Utopia   *utopiago.UtopiaClient
+	Telegram *telebot.Bot
 }
 
 type appConfig struct {

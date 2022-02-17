@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"log"
 
+	utopiago "github.com/Sagleft/utopialib-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -43,7 +45,15 @@ func (sol *solution) connectMessengers() error {
 }
 
 func (sol *solution) connectUtopia() error {
-	// TODO
+	sol.Messengers.Utopia = &utopiago.UtopiaClient{
+		Protocol: sol.Config.Utopia.Protocol,
+		Token:    sol.Config.Utopia.Token,
+		Host:     sol.Config.Utopia.Host,
+		Port:     sol.Config.Utopia.Port,
+	}
+	if !sol.Messengers.Utopia.CheckClientConnection() {
+		return errors.New("failed to connect to Utopia messenger")
+	}
 	return nil
 }
 
