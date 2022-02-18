@@ -62,6 +62,7 @@ func (sol *solution) handleMessageRequest(c *gin.Context) {
 	if sendToUtopia {
 		sol.sendUtopiaPost(msg, c)
 	}
+	handleRequestSuccess(c)
 }
 
 func (sol *solution) sendTelegramPost(postText string, c *gin.Context) {
@@ -86,7 +87,7 @@ func handleRequestError(c *gin.Context, err error) {
 }
 
 func handleRequestSuccess(c *gin.Context) {
-	c.JSON(http.StatusInternalServerError, response{
+	c.JSON(http.StatusOK, response{
 		Status: "success",
 	})
 }
