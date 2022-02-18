@@ -1,7 +1,5 @@
-# uexchange-widgets
-Widgets for sites with data from Crypton exchange
 
-![screenshot](screen.jpg)
+![screenshot](screen.png)
 
 ### How to start
 
@@ -9,13 +7,13 @@ Widgets for sites with data from Crypton exchange
 cp config.example.json config.json
 ```
 
-Set exchange pubkey & token in `config.json`
+update config in `config.json`
 
 ### Build & run
 
 ```go
 go build
-./widgets
+./tool
 ```
 
-The widget will be available at: `127.0.0.1:8080/pairs`
+The widget will be available at: `127.0.0.1:8080/` by default
