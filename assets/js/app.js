@@ -30,7 +30,7 @@ var bar = document.getElementById('js-progressbar');
 $( document ).ready(function() {
     UIkit.upload('.js-upload', {
 
-        url: '',
+        url: '/upload',
         multiple: false,
     
         beforeSend: function () {
@@ -77,8 +77,8 @@ $( document ).ready(function() {
             setTimeout(function () {
                 bar.setAttribute('hidden', 'hidden');
             }, 1000);
-    
-            alert('Upload Completed');
+
+            $("isImageUploaded").value('1');
         }
     
     });
@@ -91,6 +91,7 @@ $( document ).ready(function() {
                 showError(data.error);
             } else {
                 showAlert("The post was published");
+                $("isImageUploaded").value('0');
             }
         });
         event.preventDefault();
