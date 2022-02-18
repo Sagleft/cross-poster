@@ -1,9 +1,12 @@
 package main
 
 import (
+	"errors"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gopkg.in/tucnak/telebot.v2"
 )
 
 func (sol *solution) setupRoutes() error {
@@ -26,8 +29,64 @@ func (sol *solution) setupRoutes() error {
 			sol.getDefaultRequestHeaders(),
 		)
 	})
+	sol.Gin.POST("/send", func(c *gin.Context) {
+		sol.handleMessageRequest(c)
+	})
 
 	return nil
+}
+
+func (sol *solution) handleMessageRequest(c *gin.Context) {
+	/*var msg message
+	err := c.BindJSON(&msg)
+	if err != nil {
+		handleRequestError(c, err)
+		return
+	}*/
+
+	msg := c.PostForm("post_text")
+	if msg == "" {
+		handleRequestError(c, errors.New("Post message is empty"))
+		return
+	}
+
+	sendToTelegram := c.PostForm("post_telegram") == "1"
+	sendToUtopia := c.PostForm("post_utopia") == "1"
+	if !sendToTelegram && !sendToUtopia {
+		handleRequestError(c, errors.New("No messenger is selected"))
+		return
+	}
+
+	if sendToTelegram {
+		sol.sendTelegramPost(msg)
+	}
+	if sendToUtopia {
+		sol.sendUtopiaPost(msg)
+	}
+}
+
+func (sol *solution) sendTelegramPost(postText string) {
+	_, err := sol.Messengers.Telegram.Send(telebot.ChatID(sol.Config.Telegram.ChatID), postText, telebot.ModeMarkdown)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func (sol *solution) sendUtopiaPost(postText string) {
+	// TODO
+}
+
+func handleRequestError(c *gin.Context, err error) {
+	c.JSON(http.StatusInternalServerError, response{
+		Status:    "error",
+		ErrorInfo: err.Error(),
+	})
+}
+
+func handleRequestSuccess(c *gin.Context) {
+	c.JSON(http.StatusInternalServerError, response{
+		Status: "success",
+	})
 }
 
 func (sol *solution) getDefaultRequestHeaders() gin.H {

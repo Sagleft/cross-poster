@@ -40,3 +40,8 @@ type telegramConfig struct {
 	Token  string `json:"token"`
 	ChatID int64  `json:"chat_id"`
 }
+
+type response struct {
+	Status    string `json:"status"`
+	ErrorInfo string `json:"error"`
+}
