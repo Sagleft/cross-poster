@@ -91,7 +91,7 @@ func (sol *solution) handleMessageRequest(c *gin.Context) {
 func (sol *solution) sendTelegramPost(postText string, isImageAvailable bool, c *gin.Context) {
 	var msg interface{}
 	if isImageAvailable {
-		msg = telebot.Photo{
+		msg = &telebot.Photo{
 			File:    telebot.FromDisk(uploadedImagePath),
 			Caption: postText,
 		}

@@ -78,7 +78,7 @@ $( document ).ready(function() {
                 bar.setAttribute('hidden', 'hidden');
             }, 1000);
 
-            $("isImageUploaded").value('1');
+            $("#isImageUploaded").val('1');
         }
     
     });
@@ -91,7 +91,7 @@ $( document ).ready(function() {
                 showError(data.error);
             } else {
                 showAlert("The post was published");
-                $("isImageUploaded").value('0');
+                $("#isImageUploaded").val('0');
             }
         });
         event.preventDefault();
