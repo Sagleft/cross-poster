@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -58,22 +57,25 @@ func (sol *solution) handleMessageRequest(c *gin.Context) {
 	}
 
 	if sendToTelegram {
-		sol.sendTelegramPost(msg)
+		sol.sendTelegramPost(msg, c)
 	}
 	if sendToUtopia {
-		sol.sendUtopiaPost(msg)
+		sol.sendUtopiaPost(msg, c)
 	}
 }
 
-func (sol *solution) sendTelegramPost(postText string) {
+func (sol *solution) sendTelegramPost(postText string, c *gin.Context) {
 	_, err := sol.Messengers.Telegram.Send(telebot.ChatID(sol.Config.Telegram.ChatID), postText, telebot.ModeMarkdown)
 	if err != nil {
-		log.Println(err)
+		handleRequestError(c, err)
 	}
 }
 
-func (sol *solution) sendUtopiaPost(postText string) {
-	// TODO
+func (sol *solution) sendUtopiaPost(postText string, c *gin.Context) {
+	_, err := sol.Messengers.Utopia.SendChannelMessage(sol.Config.Utopia.ChannelID, postText)
+	if err != nil {
+		handleRequestError(c, err)
+	}
 }
 
 func handleRequestError(c *gin.Context, err error) {
