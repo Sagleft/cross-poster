@@ -36,7 +36,7 @@ func (sol *solution) initGin() error {
 }
 
 func (sol *solution) runGin() error {
-	return sol.Gin.Run()
+	return sol.Gin.Run(":" + sol.Config.BindPort)
 }
 
 func (sol *solution) connectMessengers() error {

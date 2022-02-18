@@ -20,13 +20,20 @@ type messengerClients struct {
 type appConfig struct {
 	Utopia   utopiaConfig   `json:"utopia"`
 	Telegram telegramConfig `json:"telegram"`
+	BindPort string         `json:"bind_port"`
+	FrontEnd frontendConfig `json:"frontend"`
+}
+
+type frontendConfig struct {
+	Version string `json:"version"`
 }
 
 type utopiaConfig struct {
-	Host     string `json:"host"`
-	Protocol string `json:"protocol"`
-	Port     int    `json:"port"`
-	Token    string `json:"token"`
+	Host      string `json:"host"`
+	Protocol  string `json:"protocol"`
+	Port      int    `json:"port"`
+	Token     string `json:"token"`
+	ChannelID string `json:"channel_id"`
 }
 
 type telegramConfig struct {

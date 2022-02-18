@@ -3,10 +3,15 @@
         "host": "127.0.0.1",
         "protocol": "http",
         "port": 20000,
-        "token": ""
+        "token": "",
+        "channel_id": ""
     },
     "telegram": {
         "token": "",
         "chat_id": 0
+    },
+    "bind_port": "8080",
+    "frontend": {
+        "version": "1.0.1"
     }
 }

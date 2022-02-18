@@ -15,7 +15,7 @@ func (sol *solution) setupRoutes() error {
 			c,
 			http.StatusOK,
 			"home.html",
-			gin.H{},
+			sol.getDefaultRequestHeaders(),
 		)
 	})
 	sol.Gin.NoRoute(func(c *gin.Context) {
@@ -23,11 +23,17 @@ func (sol *solution) setupRoutes() error {
 			c,
 			http.StatusNotFound,
 			"404.html",
-			gin.H{},
+			sol.getDefaultRequestHeaders(),
 		)
 	})
 
 	return nil
+}
+
+func (sol *solution) getDefaultRequestHeaders() gin.H {
+	return gin.H{
+		"version": sol.Config.FrontEnd.Version,
+	}
 }
 
 func (sol *solution) loadTemplates(pattern string) {

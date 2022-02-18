@@ -1,4 +1,4 @@
-module widgets
+module tool
 
 go 1.16
 

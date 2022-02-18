@@ -2,8 +2,45 @@
 <html lang="en">
 	{{block "head" .}} {{end}}
 	<body>
-		<h2>Everything is working</h2>
-		<p><a href="pairs"> Pairs </a></p>
+		<br/>
+		<div class="uk-container uk-width-xlarge wrap uk-padding uk-border-rounded">
+			<div class="uk-text-center data-block main-block uk-box-shadow-medium">
+				<span uk-icon="file-text"></span>
+				<span>cross-poster</span>
+			</div>
+
+			<div class="uk-text-center data-block uk-box-shadow-medium">
+				<div class="uk-margin-small-bottom">
+					<span uk-icon="plus-circle"></span>
+					<span>new post</span>
+				</div>
+
+				<form>
+					<div class="uk-margin">
+						<textarea class="uk-textarea uk-border-rounded" rows="5" placeholder="Enter the text of a new post.."></textarea>
+					</div>
+					<div class="js-upload uk-placeholder uk-text-center">
+						<span uk-icon="icon: cloud-upload"></span>
+						<span class="uk-text-middle">Attach file by dropping them here or</span>
+						<div uk-form-custom>
+							<input type="file" multiple>
+							<span class="uk-link">selecting one</span>
+						</div>
+					</div>
+					<progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+					<div class="uk-margin uk-grid-small uk-child-width-auto">
+						<span>Post to</span>
+						<label><input class="uk-checkbox" type="checkbox" checked> Utopia</label>
+						<label><input class="uk-checkbox" type="checkbox" checked> Telegram</label>
+					</div>
+
+					<button type="submit" class="uk-button uk-button-default uk-border-rounded">Send</button>
+				</form>
+			</div>
+
+			{{block "donate" .}} {{end}}
+		</div>
+		
 		{{block "scripts" .}} {{end}}
 	</body>
 </html>

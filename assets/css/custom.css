@@ -3,8 +3,28 @@ body {
     min-height: 100vh;
 }
 
-.success-block {
+.data-block {
     background-color: white;
     border-radius: 15px;
-    padding: 20px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.main-block {
+    background-color: #006efb;
+    color: white;
+}
+
+.btn-mini {
+    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-radius: 5px;
+    position: relative;
+    bottom: 2px;
+    left: 4px;
+    font-size: 0.7rem;
+    color: #6c6c6c;
 }

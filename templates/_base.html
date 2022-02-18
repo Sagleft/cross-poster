@@ -1,42 +1,38 @@
 {{define "head"}}
 <head>
     <meta charset="utf-8" />
-    <title>CRP Exchange Widgets</title>
+    <title>cross poster app</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/css/uikit.min.css" />
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/custom.css?v=1.1" />
+    <link rel="stylesheet" href="/assets/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/noty.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/custom.css?v={{ .version }}" />
 
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
 </head>
 {{end}}
 
+{{define "donate"}}
+<div class="uk-text-center data-block uk-box-shadow-medium">
+    <div>
+        <span uk-icon="heart"></span>
+        <span>donate</span>
+    </div>
+    <div class="uk-margin-small">
+        <span>crypton:</span>
+        <span>808CC.....3C464</span>
+        
+        <button class="uk-button uk-button-default btn-mini btn-copy" data-clipboard-text="808CC6D469CFA6F29D70A5110D5869D00F7EDA8D4C25D6D2E73CF6D41303C464" onclick="showAlert('copied!');">
+            <span uk-icon="copy"></span>
+        </button>
+    </div>
+</div>
+{{end}}
+
 {{define "scripts"}}
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit-icons.min.js"></script>
-{{end}}
-
-{{ define "btn-example" }}
-<a href="/showcase" class="uk-button uk-button-primary uk-border-rounded">Showcase</a>
-{{end}}
-
-{{ define "pairs" }}
-<table class="uk-table uk-table-small uk-table-divider">
-    <thead>
-        <tr>
-            <th>Table Heading</th>
-            <th>Table Heading</th>
-            <th>Table Heading</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Table Data</td>
-            <td>Table Data</td>
-            <td>Table Data</td>
-        </tr>
-    </tbody>
-</table>
+<script src="/assets/js/uikit.min.js"></script>
+<script src="/assets/js/uikit-icons.min.js"></script>
+<script src="/assets/js/clipboard.min.js"></script>
+<script src="/assets/js/noty.min.js"></script>
+<script src="/assets/js/app.js?v={{ .version }}"></script>
 {{end}}
