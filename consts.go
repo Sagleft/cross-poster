@@ -1,5 +1,6 @@
 package main
 
 const (
-	configJSONPath = "config.json"
+	configJSONPath        = "config.json"
+	uploadedImageFilename = "image.jpg"
 )

@@ -12,7 +12,7 @@ function showError(info) {
         type: 'error',
         layout: 'topRight',
         text: info,
-        timeout: 1500,
+        timeout: 5000,
     }).show();
 }
 
@@ -91,7 +91,7 @@ $( document ).ready(function() {
                 showError(response.error);
             } else {
                 showAlert("The post was published");
-                $("#isImageUploaded").val(response.data);
+                $("#isImageUploaded").val('0');
             }
         });
         event.preventDefault();

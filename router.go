@@ -4,9 +4,9 @@ import (
 	"encoding/base64"
 	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"path/filepath"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gopkg.in/tucnak/telebot.v2"
@@ -54,13 +54,12 @@ func (sol *solution) setupRoutes() error {
 			break
 		}
 
-		imageFilename := "image" + fileExtension
-		err = c.SaveUploadedFile(fileHandler, imageFilename)
+		err = c.SaveUploadedFile(fileHandler, uploadedImageFilename)
 		if err != nil {
 			handleRequestError(c, errors.New("failed to save uploaded file: "+err.Error()))
 			return
 		}
-		handleRequestSuccess(c, imageFilename)
+		handleRequestSuccess(c)
 	})
 
 	return nil
@@ -79,22 +78,29 @@ func (sol *solution) handleMessageRequest(c *gin.Context) {
 		handleRequestError(c, errors.New("No messenger is selected"))
 		return
 	}
-	imageFilename := c.PostForm("imagename")
-	if strings.Contains(imageFilename, "/") {
-		handleRequestError(c, errors.New("invail image name given"))
-		return
+
+	// hasimage
+	postHasImage := c.PostForm("hasimage") == "1"
+	imageFilename := ""
+	if postHasImage {
+		imageFilename = "image.jpg"
 	}
 
 	if sendToTelegram {
-		sol.sendTelegramPost(msg, imageFilename, c)
+		if !sol.sendTelegramPost(msg, imageFilename, c) {
+			return
+		}
 	}
 	if sendToUtopia {
-		sol.sendUtopiaPost(msg, imageFilename, c)
+		if !sol.sendUtopiaPost(msg, imageFilename, c) {
+			return
+		}
 	}
-	handleRequestSuccess(c, nil)
+	handleRequestSuccess(c)
 }
 
-func (sol *solution) sendTelegramPost(postText string, imageFilename string, c *gin.Context) {
+func (sol *solution) sendTelegramPost(postText string, imageFilename string, c *gin.Context) bool {
+	log.Println(imageFilename)
 	var msg interface{}
 	if imageFilename != "" {
 		msg = &telebot.Photo{
@@ -112,47 +118,60 @@ func (sol *solution) sendTelegramPost(postText string, imageFilename string, c *
 	)
 	if err != nil {
 		handleRequestError(c, errors.New("failed to send post to Telegram: "+err.Error()))
+		return false
 	}
+	return true
 }
 
-func (sol *solution) sendUtopiaPost(postText string, imageFilename string, c *gin.Context) {
+func (sol *solution) sendUtopiaPost(postText string, imageFilename string, c *gin.Context) bool {
+	if !sol.Messengers.Utopia.CheckClientConnection() {
+		// try to reconnect
+		err := sol.connectUtopia()
+		if err != nil {
+			handleRequestError(c, err)
+			return false
+		}
+	}
+
 	if imageFilename != "" {
 		imageBytes, err := ioutil.ReadFile(imageFilename)
 		if err != nil {
 			handleRequestError(c, errors.New("failed to read uploaded image: "+err.Error()))
-			return
+			return false
 		}
 
 		_, err = sol.Messengers.Utopia.SendChannelPicture(
 			sol.Config.Utopia.ChannelID,
 			base64.StdEncoding.EncodeToString(imageBytes),
 			postText,
-			"image.jpg",
+			uploadedImageFilename,
 		)
 		if err != nil {
 			handleRequestError(c, errors.New("failed to send post with image to Utopia: "+err.Error()))
-			return
+			return false
 		}
+		return true
 	}
 
 	// send plain text
 	_, err := sol.Messengers.Utopia.SendChannelMessage(sol.Config.Utopia.ChannelID, postText)
 	if err != nil {
 		handleRequestError(c, errors.New("failed to send post to Utopia: "+err.Error()))
+		return false
 	}
+	return true
 }
 
 func handleRequestError(c *gin.Context, err error) {
-	c.JSON(http.StatusInternalServerError, response{
+	c.JSON(http.StatusOK, response{
 		Status:    "error",
 		ErrorInfo: err.Error(),
 	})
 }
 
-func handleRequestSuccess(c *gin.Context, data interface{}) {
+func handleRequestSuccess(c *gin.Context) {
 	c.JSON(http.StatusOK, response{
 		Status: "success",
-		Data:   data,
 	})
 }
 
