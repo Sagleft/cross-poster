@@ -11,8 +11,8 @@ update config in `config.json`:
 
 * `utopia.token` - your API token from Utopia API Settings;
 * `utopia.channel_id` - the ID of the channel in which the account is an administrator or moderator with the right to publish messages;
-* `telegram.token` - your Telegram Bot token given from [https://t.me/BotFather](@BotFather);
-* `telegram.chat_id` - your channel (chat) ID to post messages. You can find it out by using [https://t.me/getmyid_bot](@getmyid_bot);
+* `telegram.token` - your Telegram Bot token given from [@BotFather](https://t.me/BotFather);
+* `telegram.chat_id` - your channel (chat) ID to post messages. You can find it out by using [@getmyid_bot](https://t.me/getmyid_bot);
 
 ### Build & run
 
