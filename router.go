@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gopkg.in/tucnak/telebot.v2"
@@ -53,12 +54,13 @@ func (sol *solution) setupRoutes() error {
 			break
 		}
 
-		err = c.SaveUploadedFile(fileHandler, uploadedImagePath)
+		imageFilename := "image" + fileExtension
+		err = c.SaveUploadedFile(fileHandler, imageFilename)
 		if err != nil {
 			handleRequestError(c, errors.New("failed to save uploaded file: "+err.Error()))
 			return
 		}
-		handleRequestSuccess(c)
+		handleRequestSuccess(c, imageFilename)
 	})
 
 	return nil
@@ -77,22 +79,26 @@ func (sol *solution) handleMessageRequest(c *gin.Context) {
 		handleRequestError(c, errors.New("No messenger is selected"))
 		return
 	}
-	isImageAvailable := c.PostForm("hasimage") == "1"
+	imageFilename := c.PostForm("imagename")
+	if strings.Contains(imageFilename, "/") {
+		handleRequestError(c, errors.New("invail image name given"))
+		return
+	}
 
 	if sendToTelegram {
-		sol.sendTelegramPost(msg, isImageAvailable, c)
+		sol.sendTelegramPost(msg, imageFilename, c)
 	}
 	if sendToUtopia {
-		sol.sendUtopiaPost(msg, isImageAvailable, c)
+		sol.sendUtopiaPost(msg, imageFilename, c)
 	}
-	handleRequestSuccess(c)
+	handleRequestSuccess(c, nil)
 }
 
-func (sol *solution) sendTelegramPost(postText string, isImageAvailable bool, c *gin.Context) {
+func (sol *solution) sendTelegramPost(postText string, imageFilename string, c *gin.Context) {
 	var msg interface{}
-	if isImageAvailable {
+	if imageFilename != "" {
 		msg = &telebot.Photo{
-			File:    telebot.FromDisk(uploadedImagePath),
+			File:    telebot.FromDisk(imageFilename),
 			Caption: postText,
 		}
 	} else {
@@ -109,9 +115,9 @@ func (sol *solution) sendTelegramPost(postText string, isImageAvailable bool, c 
 	}
 }
 
-func (sol *solution) sendUtopiaPost(postText string, isImageAvailable bool, c *gin.Context) {
-	if isImageAvailable {
-		imageBytes, err := ioutil.ReadFile(uploadedImagePath)
+func (sol *solution) sendUtopiaPost(postText string, imageFilename string, c *gin.Context) {
+	if imageFilename != "" {
+		imageBytes, err := ioutil.ReadFile(imageFilename)
 		if err != nil {
 			handleRequestError(c, errors.New("failed to read uploaded image: "+err.Error()))
 			return
@@ -143,9 +149,10 @@ func handleRequestError(c *gin.Context, err error) {
 	})
 }
 
-func handleRequestSuccess(c *gin.Context) {
+func handleRequestSuccess(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, response{
 		Status: "success",
+		Data:   data,
 	})
 }
 

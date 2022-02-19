@@ -86,12 +86,12 @@ $( document ).ready(function() {
     new ClipboardJS('.btn-copy');
 
     $( "#main-form" ).submit(function( event ) {
-        $.post( "/send", $( "#main-form" ).serialize(), function(data) {
-            if(data.status == "error") {
-                showError(data.error);
+        $.post( "/send", $( "#main-form" ).serialize(), function(response) {
+            if(response.status == "error") {
+                showError(response.error);
             } else {
                 showAlert("The post was published");
-                $("#isImageUploaded").val('0');
+                $("#isImageUploaded").val(response.data);
             }
         });
         event.preventDefault();

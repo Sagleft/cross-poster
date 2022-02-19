@@ -42,6 +42,7 @@ type telegramConfig struct {
 }
 
 type response struct {
-	Status    string `json:"status"`
-	ErrorInfo string `json:"error"`
+	Status    string      `json:"status"`
+	Data      interface{} `json:"data,omitempty"`
+	ErrorInfo string      `json:"error"`
 }
