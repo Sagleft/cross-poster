@@ -36,6 +36,13 @@ func (sol *solution) initGin() error {
 }
 
 func (sol *solution) runGin() error {
+	go func() {
+		time.Sleep(time.Millisecond * 400)
+		err := openBrowserURL("http://127.0.0.1:" + sol.Config.BindPort)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}()
 	return sol.Gin.Run(":" + sol.Config.BindPort)
 }
 

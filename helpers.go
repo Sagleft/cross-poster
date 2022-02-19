@@ -3,8 +3,11 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
+	"runtime"
 )
 
 func (sol *solution) parseConfig() error {
@@ -29,4 +32,17 @@ func checkErrors(errChecks ...errorFunc) error {
 		}
 	}
 	return nil
+}
+
+func openBrowserURL(urlAddress string) error {
+	switch runtime.GOOS {
+	case "linux":
+		return exec.Command("xdg-open", urlAddress).Start()
+	case "windows":
+		return exec.Command("rundll32", "url.dll,FileProtocolHandler", urlAddress).Start()
+	case "darwin":
+		return exec.Command("open", urlAddress).Start()
+	default:
+		return fmt.Errorf("unsupported platform")
+	}
 }
