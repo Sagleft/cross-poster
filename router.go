@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"path/filepath"
 
@@ -100,7 +99,6 @@ func (sol *solution) handleMessageRequest(c *gin.Context) {
 }
 
 func (sol *solution) sendTelegramPost(postText string, imageFilename string, c *gin.Context) bool {
-	log.Println(imageFilename)
 	var msg interface{}
 	if imageFilename != "" {
 		msg = &telebot.Photo{
