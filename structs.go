@@ -37,8 +37,9 @@ type utopiaConfig struct {
 }
 
 type telegramConfig struct {
-	Token  string `json:"token"`
-	ChatID int64  `json:"chat_id"`
+	Token      string `json:"token"`
+	ChatID     int64  `json:"chat_id"`
+	SilentMode bool   `json:"silent_mode"`
 }
 
 type response struct {

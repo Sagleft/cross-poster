@@ -8,7 +8,8 @@
     },
     "telegram": {
         "token": "",
-        "chat_id": 0
+        "chat_id": 0,
+        "silent_mode": true
     },
     "bind_port": "8080",
     "frontend": {
