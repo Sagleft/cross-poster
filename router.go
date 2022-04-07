@@ -114,7 +114,7 @@ func (sol *solution) sendTelegramPost(postText string, imageFilename string, c *
 	_, err := sol.Messengers.Telegram.Send(
 		telebot.ChatID(sol.Config.Telegram.ChatID),
 		msg,
-		telebot.ModeMarkdown,
+		telebot.ModeMarkdown, telebot.Silent,
 	)
 	if err != nil {
 		handleRequestError(c, errors.New("failed to send post to Telegram: "+err.Error()))
