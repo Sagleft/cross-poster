@@ -11,7 +11,7 @@ body {
 }
 
 .main-block {
-    background-color: #006efb;
+    background-color: #4d9bff;
     color: white;
 }
 
@@ -27,4 +27,28 @@ body {
     left: 4px;
     font-size: 0.7rem;
     color: #6c6c6c;
+}
+
+.icon-fix {
+    position: relative;
+    bottom: 3px;
+    right: 1px;
+}
+
+.post-block {
+    position: relative;
+}
+
+.settings-button {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.settings-button span {
+    position: relative;
+    bottom: 2px;
+}
+
+.settings-container {
+    right: 15px; bottom: 15px;
 }

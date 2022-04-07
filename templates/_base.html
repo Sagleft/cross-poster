@@ -12,6 +12,13 @@
 </head>
 {{end}}
 
+{{define "title-block"}}
+<div class="uk-text-center data-block main-block uk-box-shadow-medium">
+    <span uk-icon="file-text"></span>
+    <span>cross-poster</span>
+</div>
+{{end}}
+
 {{define "donate"}}
 <div class="uk-text-center data-block uk-box-shadow-medium">
     <div>
@@ -19,7 +26,7 @@
         <span>donate</span>
     </div>
     <div class="uk-margin-small">
-        <span>crypton:</span>
+        <span>crypton/uusd:</span>
         <span>808CC.....3C464</span>
         
         <button class="uk-button uk-button-default btn-mini btn-copy" data-clipboard-text="808CC6D469CFA6F29D70A5110D5869D00F7EDA8D4C25D6D2E73CF6D41303C464" onclick="showAlert('copied!');">
@@ -27,6 +34,84 @@
         </button>
     </div>
 </div>
+{{end}}
+
+{{define "channels"}}
+<div class="uk-text-center data-block uk-box-shadow-medium">
+    <div>
+        <span uk-icon="world" class="icon-fix"></span>
+        <span>Useful resources</span>
+    </div>
+    <div class="uk-margin-small">
+        <center>
+            <ul class="uk-list uk-list-divider uk-width-medium uk-text-left">
+                <li>
+                    <span uk-icon="link"></span>
+                    <a href="https://t.me/utopiaP2Pofficial" target="_blank">Utopia P2P (ENG)</a>
+                </li>
+                <li>
+                    <span uk-icon="link"></span>
+                    <a href="https://t.me/utopia_thegame" target="_blank">Экосистема Utopia (RUS)</a>
+                </li>
+            </ul>
+        </center>
+    </div>
+</div>
+{{end}}
+
+{{define "main-block"}}
+<div class="uk-text-center data-block uk-box-shadow-medium post-block">
+    <div class="uk-margin-small-bottom">
+        <span uk-icon="plus-circle"></span>
+        <span>new post</span>
+    </div>
+
+    {{block "post-form" .}} {{end}}
+
+    <div class="uk-position-bottom-right settings-container">
+        <button uk-toggle="target: #settings-modal" type="button" class="uk-button uk-button-default uk-border-rounded settings-button">
+            <span uk-icon="cog"></span>
+        </button>
+    </div>
+</div>
+
+<!-- settings modal -->
+<div id="settings-modal" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-border-rounded">
+
+        <h2 class="uk-text-center">Settings</h2>
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+        <p>TODO</p>
+
+    </div>
+</div>
+{{end}}
+
+{{define "post-form"}}
+<form id="main-form" method="POST" action="/send" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" id="isImageUploaded" name="hasimage" value="" />
+    <div class="uk-margin">
+        <textarea class="uk-textarea uk-border-rounded" rows="5" placeholder="Enter the text of a new post.." name="post_text"></textarea>
+    </div>
+    <div class="js-upload uk-placeholder uk-text-center">
+        <span uk-icon="icon: cloud-upload"></span>
+        <span class="uk-text-middle">Attach file by dropping them here or</span>
+        <div uk-form-custom>
+            <input type="file" name="post_file" multiple>
+            <span class="uk-link">selecting one</span>
+        </div>
+    </div>
+    <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+    <div class="uk-margin uk-grid-small uk-child-width-auto">
+        <span>Post to</span>
+        <label><input class="uk-checkbox" name="post_utopia" value="1" type="checkbox" checked> Utopia</label>
+        <label><input class="uk-checkbox" name="post_telegram" value="1" type="checkbox" checked> Telegram</label>
+    </div>
+
+    <button type="submit" class="uk-button uk-button-default uk-border-rounded">Send</button>
+</form>
 {{end}}
 
 {{define "scripts"}}
