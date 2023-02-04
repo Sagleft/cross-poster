@@ -1,6 +1,10 @@
 
 ![screenshot](screen.png)
 
+Download: https://github.com/Sagleft/cross-poster/releases
+
+Forum topic: https://talk.u.is/viewtopic.php?pid=4627
+
 ### How to start
 
 ```bash
