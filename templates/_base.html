@@ -72,9 +72,13 @@
 
     {{block "post-form" .}} {{end}}
 
-    <div class="uk-position-bottom-right settings-container">
+    <div class="uk-position-top-right settings-container">
         <button uk-toggle="target: #settings-modal" type="button" class="uk-button uk-button-default uk-border-rounded settings-button">
             <span uk-icon="cog"></span>
+        </button>
+
+        <button type="button" class="uk-button uk-button-default uk-border-rounded settings-button" onclick="shutdownapp();">
+            <span uk-icon="sign-out"></span>
         </button>
     </div>
 </div>
@@ -96,6 +100,7 @@
 {{define "post-form"}}
 <form id="main-form" method="POST" action="/send" enctype="application/x-www-form-urlencoded">
     <input type="hidden" id="isImageUploaded" name="hasimage" value="" />
+
     <div class="uk-margin">
         <textarea class="uk-textarea uk-border-rounded" rows="5" placeholder="Enter the text of a new post.." name="post_text"></textarea>
     </div>

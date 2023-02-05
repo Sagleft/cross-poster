@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
@@ -60,6 +61,9 @@ func (sol *solution) setupRoutes() error {
 		}
 		handleRequestSuccess(c)
 	})
+	sol.Gin.GET("/exit", func(c *gin.Context) {
+		os.Exit(1)
+	})
 
 	return nil
 }
@@ -67,14 +71,14 @@ func (sol *solution) setupRoutes() error {
 func (sol *solution) handleMessageRequest(c *gin.Context) {
 	msg := c.PostForm("post_text")
 	if msg == "" {
-		handleRequestError(c, errors.New("Post message is empty"))
+		handleRequestError(c, errors.New("post message is empty"))
 		return
 	}
 
 	sendToTelegram := c.PostForm("post_telegram") == "1"
 	sendToUtopia := c.PostForm("post_utopia") == "1"
 	if !sendToTelegram && !sendToUtopia {
-		handleRequestError(c, errors.New("No messenger is selected"))
+		handleRequestError(c, errors.New("no messenger is selected"))
 		return
 	}
 

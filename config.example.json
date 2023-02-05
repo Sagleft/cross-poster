@@ -13,6 +13,6 @@
     },
     "bind_port": "8080",
     "frontend": {
-        "version": "1.0.1"
+        "version": "1.0.2"
     }
 }

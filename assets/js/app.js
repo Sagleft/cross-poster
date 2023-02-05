@@ -25,6 +25,14 @@ function IsJsonString(str) {
     return true;
 }
 
+function shutdownapp() {
+    if(confirm("End the application?")) {
+        $.get("/exit").always(function() {
+            window.close();
+        });
+    }
+}
+
 var bar = document.getElementById('js-progressbar');
 
 $( document ).ready(function() {
