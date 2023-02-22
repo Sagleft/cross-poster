@@ -131,6 +131,11 @@ func (sol *solution) sendTelegramPost(postText string, imageFilename string, c *
 }
 
 func (sol *solution) sendUtopiaPost(postText string, imageFilename string, c *gin.Context) bool {
+	if sol.Config.Utopia.ChannelID == "" {
+		handleRequestError(c, errors.New("utopia channel ID is not set"))
+		return false
+	}
+
 	if !sol.Messengers.Utopia.CheckClientConnection() {
 		// try to reconnect
 		err := sol.connectUtopia()
