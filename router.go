@@ -74,6 +74,12 @@ func (sol *solution) setupRoutes() error {
 			handleRequestError(c, sol.LastError)
 			return
 		}
+
+		if sol.Messengers.Utopia == nil {
+			handleRequestError(c, errors.New("utopia not connected. wait to reconnect"))
+			return
+		}
+
 		handleRequestSuccess(c)
 	})
 

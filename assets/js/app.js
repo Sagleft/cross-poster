@@ -111,7 +111,9 @@ $( document ).ready(function() {
 function checkAppStatus() {
     $.post( "/check", {}, function(response) {
         if(response.status == "error") {
-            showAlert(response.error);
+            showError(response.error);
+        } else {
+            showAlert("connected!");
         }
     });
 }

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	swissknife "github.com/Sagleft/swiss-knife"
+	"github.com/Sagleft/uchatbot-engine"
 	utopiago "github.com/Sagleft/utopialib-go/v2"
 	"github.com/fatih/color"
 	"github.com/gin-gonic/gin"
@@ -28,8 +29,7 @@ func main() {
 	go app.runGin()
 
 	if err := app.connectMessengers(); err != nil {
-		app.LastError = err
-		color.Red(err.Error())
+		app.setLastError(fmt.Errorf("connect messengers: %w", err))
 	}
 
 	swissknife.WaitForAppFinish()
@@ -37,6 +37,11 @@ func main() {
 
 func newSolution() *solution {
 	return &solution{}
+}
+
+func (sol *solution) setLastError(err error) {
+	sol.LastError = err
+	color.Red(err.Error())
 }
 
 func (sol *solution) initGin() error {
@@ -71,13 +76,27 @@ func (sol *solution) connectUtopia() error {
 		return errors.New("utopia token is not set in " + configJSONPath)
 	}
 
-	sol.Messengers.Utopia = utopiago.NewUtopiaClient(utopiago.Config{
-		Host:     sol.Config.Utopia.Host,
-		Token:    sol.Config.Utopia.Token,
-		Port:     sol.Config.Utopia.Port,
-		WsPort:   defaultWsPort,
-		Protocol: sol.Config.Utopia.Protocol,
+	// create chatbot to handle auto-reconnect
+	chatBot, err := uchatbot.NewChatBot(uchatbot.ChatBotData{
+		Config: utopiago.Config{
+			Host:     sol.Config.Utopia.Host,
+			Token:    sol.Config.Utopia.Token,
+			Port:     sol.Config.Utopia.Port,
+			WsPort:   defaultWsPort,
+			Protocol: sol.Config.Utopia.Protocol,
+		},
+		Chats: []uchatbot.Chat{
+			{ID: sol.Config.Utopia.ChannelID},
+		},
+		DisableEvents:    true,
+		UseErrorCallback: true,
+		ErrorCallback:    sol.setLastError,
 	})
+	if err != nil {
+		return fmt.Errorf("setup Utopia: %w", err)
+	}
+
+	sol.Messengers.Utopia = chatBot.GetClient()
 
 	if !sol.Messengers.Utopia.CheckClientConnection() {
 		return errors.New("failed to connect to Utopia messenger")
