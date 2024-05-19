@@ -24,6 +24,7 @@ func (sol *solution) setupRoutes() error {
 			sol.getDefaultRequestHeaders(),
 		)
 	})
+
 	sol.Gin.NoRoute(func(c *gin.Context) {
 		sol.renderTemplate(
 			c,
@@ -32,9 +33,11 @@ func (sol *solution) setupRoutes() error {
 			sol.getDefaultRequestHeaders(),
 		)
 	})
+
 	sol.Gin.POST("/send", func(c *gin.Context) {
 		sol.handleMessageRequest(c)
 	})
+
 	sol.Gin.POST("/upload", func(c *gin.Context) {
 		fileHandler, err := c.FormFile("files[]")
 		if err != nil {
@@ -61,8 +64,17 @@ func (sol *solution) setupRoutes() error {
 		}
 		handleRequestSuccess(c)
 	})
+
 	sol.Gin.GET("/exit", func(c *gin.Context) {
 		os.Exit(1)
+	})
+
+	sol.Gin.POST("/check", func(c *gin.Context) {
+		if sol.LastError != nil {
+			handleRequestError(c, sol.LastError)
+			return
+		}
+		handleRequestSuccess(c)
 	})
 
 	return nil

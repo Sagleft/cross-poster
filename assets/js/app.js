@@ -3,7 +3,7 @@ function showAlert(info) {
         type: 'alert',
         layout: 'topRight',
         text: info,
-        timeout: 1500,
+        timeout: 4500,
     }).show();
 }
 
@@ -12,7 +12,7 @@ function showError(info) {
         type: 'error',
         layout: 'topRight',
         text: info,
-        timeout: 5000,
+        timeout: 10000,
     }).show();
 }
 
@@ -104,4 +104,14 @@ $( document ).ready(function() {
         });
         event.preventDefault();
     });
+
+    setTimeout( function() { checkAppStatus(); }, 2000);
 });
+
+function checkAppStatus() {
+    $.post( "/check", {}, function(response) {
+        if(response.status == "error") {
+            showAlert(response.error);
+        }
+    });
+}

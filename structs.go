@@ -10,6 +10,8 @@ type solution struct {
 	Config     appConfig
 	Gin        *gin.Engine
 	Messengers messengerClients
+
+	LastError error
 }
 
 type messengerClients struct {
