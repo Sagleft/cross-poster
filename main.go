@@ -96,6 +96,7 @@ func (sol *solution) connectUtopia() error {
 		return fmt.Errorf("setup Utopia: %w", err)
 	}
 
+	sol.setLastError(nil)
 	sol.Messengers.Utopia = chatBot.GetClient()
 
 	if !sol.Messengers.Utopia.CheckClientConnection() {
