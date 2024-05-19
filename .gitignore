@@ -8,6 +8,7 @@ tool
 image.jpg
 image.png
 build/
+*.zip
 
 # Test binary, built with `go test -c`
 *.test
